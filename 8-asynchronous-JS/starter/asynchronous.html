@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Asynchronous JavaScript</title>
+</head>
+
+<body>
+  <h1>Asynchronous JavaScript</h1>
+  <script>
+
+    const greeting = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve({ greeting: "Hi my name is Diego", company: "Teleperformance" })
+      }, 1500);
+    });
+
+    const presentation = company => {
+      return new Promise((resolve, reject) => {
+        setTimeout(comp => {
+          const ids = [12, 345, 111];
+          resolve({ id: ids[1], company: comp });
+        }, 1500, company);
+      })
+    }
+
+    const finalGreeting = () => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve('Is a pleasure attendant you. What do you need ?');
+        }, 1500);
+      });
+    }
+
+    // tradicional llamado de promesas
+    // greeting
+    //   .then((obj) => {
+    //     console.log(obj.greeting);
+    //     return presentation(obj.company);
+    //   })
+    //   .then(obj => {
+    //     console.log(`Im an asesor from ${obj.company}, I have your register with # ${obj.id}`);
+    //     return finalGreeting();
+    //   })
+    //   .then((message)=>{
+    //     console.log(message);
+    //   })
+    //   .catch(error => console.log('Error'))
+
+    // Asymc await
+    // async function greetingAW(){
+    //   const objGreeting = await greeting;
+    //   console.log(objGreeting.greeting);
+
+    //   // call presentation
+    //   const objPresentation = await presentation(objGreeting.company);
+    //   console.log(`Im an asesor from ${objPresentation.company}, I have your register with # ${objPresentation.id}`);
+
+    //   // final greeting
+    //   const finalG = await  finalGreeting();
+    //   console.log(finalG);
+
+
+    // }
+    // greetingAW().then( () => {
+    //   console.log('Final chat from assesor');
+    // });
+
+    // Fetch
+    function getWeather(woeid) {
+      fetch(`https://crossorigin.me/https://www.metaweather.com/api/location/${woeid}/`)
+        .then(result => {
+          // console.log(result);
+          return result.json();
+        })
+        .then(data => {
+          // console.log(data);
+          const today = data.consolidated_weather[0];
+          console.log(`Temperatures today in ${data.title} stay between ${today.min_temp} and ${today.max_temp}.`);
+        })
+        .catch(error => console.log(error));
+    }
+    getWeather(2487956);
+
+  </script>
+</body>
+
+</html>
